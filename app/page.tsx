@@ -1,126 +1,102 @@
-"use client";
 
-import { Activity, Users, AlertTriangle, Clock, ArrowRight, Bot } from "lucide-react";
-import { StatsCard } from "@/components/dashboard/stats-card";
-import { OverviewChart } from "@/components/dashboard/overview-chart";
-import { ActivityTable } from "@/components/dashboard/activity-table";
 import Link from "next/link";
+import { ArrowRight, Activity } from "lucide-react";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">Good morning, Dr. Rajesh 👋</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Here&apos;s what&apos;s happening in your lab today.</p>
-        </div>
-        <Link
-          href="/ai-pathologist"
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow-sm"
-        >
-          Upload New Scan
-          <ArrowRight size={15} />
-        </Link>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard
-          title="Slides Analyzed Today"
-          value="124"
-          icon={Activity}
-          trend="12%"
-          trendUp={true}
-          description="vs. yesterday"
-          color="blue"
-        />
-        <StatsCard
-          title="High Risk Detected"
-          value="12"
-          icon={AlertTriangle}
-          trend="2 cases"
-          trendUp={false}
-          highlight={true}
-          description="Requires immediate review"
-        />
-        <StatsCard
-          title="Pending Reviews"
-          value="5"
-          icon={Users}
-          description="3 marked urgent"
-          color="amber"
-        />
-        <StatsCard
-          title="Avg. Turnaround"
-          value="2m 15s"
-          icon={Clock}
-          trend="30s"
-          trendUp={true}
-          description="Faster than last week"
-          color="green"
-        />
-      </div>
-
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2">
-          <OverviewChart />
-        </div>
-
-        <div className="space-y-4">
-          {/* Quick Actions */}
-          <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-            <h3 className="text-sm font-semibold text-slate-900 mb-3">Quick Actions</h3>
-            <div className="space-y-2">
-              <Link
-                href="/ai-pathologist"
-                className="flex items-center justify-between w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium"
-              >
-                Upload New Scan
-                <ArrowRight size={15} />
-              </Link>
-              <button className="flex items-center justify-between w-full px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-medium">
-                Generate Daily Report
-                <ArrowRight size={15} className="text-slate-400" />
-              </button>
-              <Link
-                href="/patients"
-                className="flex items-center justify-between w-full px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-medium"
-              >
-                View Patient Records
-                <ArrowRight size={15} className="text-slate-400" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Mitra AI Card */}
-          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 p-5 rounded-xl shadow-md text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-8 translate-x-8" />
-            <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-6 -translate-x-6" />
-            <div className="relative">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center">
-                  <Bot size={15} className="text-white" />
-                </div>
-                <span className="text-sm font-semibold">Mitra AI</span>
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      {/* Navigation */}
+      <nav className="w-full bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Activity className="text-white w-5 h-5" />
               </div>
-              <p className="text-blue-100 text-xs leading-relaxed mb-4">
-                &quot;I noticed a 15% increase in high-risk cases this week. Would you like to review the specific cluster?&quot;
-              </p>
+              <span className="text-xl font-bold text-slate-900">OncoScan</span>
+            </div>
+            <div className="flex items-center gap-4">
               <Link
-                href="/mitra-bot"
-                className="inline-flex items-center gap-1.5 text-xs bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg border border-white/20 font-medium"
+                href="/login"
+                className="text-slate-600 hover:text-slate-900 font-medium text-sm"
               >
-                Chat with Mitra <ArrowRight size={11} />
+                Log in
+              </Link>
+              <Link
+                href="/signup"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Sign up
               </Link>
             </div>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Recent Activity */}
-      <ActivityTable />
+      {/* Hero Section */}
+      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+
+        {/* Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+          <div className="absolute top-1/4 -left-10 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-blue-700 text-xs font-semibold uppercase tracking-wider">
+            <span>🚀 AI-Powered Pathology</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight">
+            Advanced Oral Cancer <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+              Detection & Analysis
+            </span>
+          </h1>
+
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Empowering pathologists with state-of-the-art AI to detect early signs of oral cancer with high precision. Streamline your workflow and save lives.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link
+              href="/signup"
+              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all hover:scale-105"
+            >
+              Get Started
+              <ArrowRight size={18} />
+            </Link>
+            <Link
+              href="/login"
+              className="w-full sm:w-auto px-8 py-3.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold transition-all hover:scale-105"
+            >
+              Live Demo
+            </Link>
+          </div>
+
+          <div className="pt-12 grid grid-cols-3 gap-8 text-center border-t border-slate-200 mt-12">
+            <div>
+              <p className="text-3xl font-bold text-slate-900">98%</p>
+              <p className="text-sm text-slate-500 mt-1">Accuracy Rate</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-slate-900">24/7</p>
+              <p className="text-sm text-slate-500 mt-1">Instant Analysis</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-slate-900">5k+</p>
+              <p className="text-sm text-slate-500 mt-1">Scans Processed</p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-white py-6 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
+          &copy; {new Date().getFullYear()} OncoScan. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }

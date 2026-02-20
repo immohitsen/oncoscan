@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { DashboardLayout } from "@/components/dashboard-layout";
+
 
 export const metadata: Metadata = {
   title: "Oncoscan - Oral Cancer Detection",
@@ -28,10 +28,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased">
-        <DashboardLayout>
-          {children}
-        </DashboardLayout>
+      <body className="antialiased" suppressHydrationWarning>
+        {children}
       </body>
     </html>
   );

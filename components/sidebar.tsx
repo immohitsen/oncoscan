@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
     LayoutDashboard,
     Microscope,
@@ -15,12 +15,13 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useUser } from "@/hooks/useUser";
 
 const navItems = [
-    { name: "Dashboard", href: "/", icon: LayoutDashboard },
-    { name: "AI Pathologist", href: "/ai-pathologist", icon: Microscope },
-    { name: "Patient Records", href: "/patients", icon: Users },
-    { name: "Mitra Bot", href: "/mitra-bot", icon: Bot },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "AI Pathologist", href: "/dashboard/ai-pathologist", icon: Microscope },
+    { name: "Patient Records", href: "/dashboard/patients", icon: Users },
+    { name: "Mitra Bot", href: "/dashboard/mitra-bot", icon: Bot },
 ];
 
 const bottomNavItems = [
@@ -29,7 +30,14 @@ const bottomNavItems = [
 
 export function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
+    const { user, initials } = useUser();
+
+    const handleLogout = async () => {
+        await fetch("/api/auth/logout", { method: "POST" });
+        router.push("/login");
+    };
 
     return (
         <>
@@ -117,15 +125,20 @@ export function Sidebar() {
 
                 {/* User Profile */}
                 <div className="p-3 border-t border-slate-100 shrink-0">
-                    <div className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-50 cursor-pointer group">
+                    <div
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-50 cursor-pointer group"
+                    >
                         <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-sm">
-                            DR
+                            {initials}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-slate-900 truncate">Dr. Rajesh</p>
-                            <p className="text-xs text-slate-500 truncate">Senior Pathologist</p>
+                            <p className="text-sm font-semibold text-slate-900 truncate">
+                                {user?.name ?? "Loading..."}
+                            </p>
+                            <p className="text-xs text-slate-500 truncate">{user?.email ?? ""}</p>
                         </div>
-                        <LogOut size={15} className="text-slate-300 group-hover:text-slate-500 shrink-0" />
+                        <LogOut size={15} className="text-slate-300 group-hover:text-red-400 shrink-0 transition-colors" />
                     </div>
                 </div>
             </aside>

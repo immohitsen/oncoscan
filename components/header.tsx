@@ -2,6 +2,7 @@
 
 import { Search, Bell, ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
 
 const pageTitles: Record<string, { title: string; subtitle: string }> = {
     "/": { title: "Dashboard", subtitle: "Overview of today's activity" },
@@ -14,6 +15,7 @@ const pageTitles: Record<string, { title: string; subtitle: string }> = {
 export function Header() {
     const pathname = usePathname();
     const page = pageTitles[pathname] ?? { title: "Oncoscan", subtitle: "" };
+    const { user, initials } = useUser();
 
     return (
         <header className="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-6 sticky top-0 z-30">
@@ -44,9 +46,11 @@ export function Header() {
 
                 <button className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-slate-100">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
-                        DR
+                        {initials}
                     </div>
-                    <span className="text-sm font-medium text-slate-700 hidden sm:block">Dr. Rajesh</span>
+                    <span className="text-sm font-medium text-slate-700 hidden sm:block">
+                        {user?.name ?? "Loading..."}
+                    </span>
                     <ChevronDown size={14} className="text-slate-400 hidden sm:block" />
                 </button>
             </div>
