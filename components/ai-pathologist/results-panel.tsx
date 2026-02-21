@@ -15,9 +15,23 @@ export function ResultsPanel({ result, state, errorMsg }: ResultsPanelProps) {
     const confidencePct = result ? Math.round(result.confidence * 100) : null;
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
-            <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Analysis Results</h3>
+        <div
+            style={{
+                background: "var(--bg-elevated)",
+                border: "1px solid var(--border)",
+                color: "var(--text-primary)",
+            }}
+            className="rounded-xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col">
+            <div
+                style={{
+                    borderBottom: "1px solid var(--border)",
+                }}
+                className="p-5 border-b border-gray-100 flex items-center justify-between">
+                <h3
+                    style={{
+                        color: "var(--text-primary)",
+                    }}
+                    className="text-lg font-semibold text-gray-900">Analysis Results</h3>
                 {state === "done" && result && (
                     <span className={cn(
                         "text-xs font-semibold px-2.5 py-1 rounded-full",
@@ -32,7 +46,6 @@ export function ResultsPanel({ result, state, errorMsg }: ResultsPanelProps) {
                 {/* Idle State */}
                 {state === "idle" && (
                     <div className="flex-1 flex flex-col items-center justify-center text-center gap-3 text-gray-400">
-                        <Activity size={40} className="opacity-30" />
                         <p className="text-sm">Upload a slide to see analysis results here.</p>
                     </div>
                 )}
@@ -138,10 +151,6 @@ export function ResultsPanel({ result, state, errorMsg }: ResultsPanelProps) {
                             <button className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors">
                                 <FileText size={18} />
                                 Generate Detailed Report
-                            </button>
-                            <button className="w-full py-2.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors">
-                                <Share2 size={18} />
-                                Share with Oncologist
                             </button>
                         </div>
                     </>

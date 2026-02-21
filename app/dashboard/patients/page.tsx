@@ -2,7 +2,6 @@
 
 import { Search, Filter, Plus, UserCheck, Users } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 type Patient = {
     id: string;
@@ -13,11 +12,11 @@ type Patient = {
     status: string;
 };
 
-const statusConfig: Record<string, { className: string; dot: string }> = {
-    "High Risk": { className: "bg-red-50 text-red-700 border-red-100", dot: "bg-red-500" },
-    "Normal": { className: "bg-green-50 text-green-700 border-green-100", dot: "bg-green-500" },
-    "Inconclusive": { className: "bg-amber-50 text-amber-700 border-amber-100", dot: "bg-amber-500" },
-    "Pending": { className: "bg-slate-100 text-slate-600 border-slate-200", dot: "bg-slate-400" },
+const statusStyles: Record<string, { bg: string; color: string; dot: string }> = {
+    "High Risk": { bg: "var(--danger-light)", color: "var(--danger)", dot: "var(--danger)" },
+    "Normal": { bg: "var(--success-light)", color: "var(--success)", dot: "var(--success)" },
+    "Inconclusive": { bg: "var(--warning-light)", color: "var(--warning)", dot: "var(--warning)" },
+    "Pending": { bg: "var(--bg-subtle)", color: "var(--text-muted)", dot: "var(--text-muted)" },
 };
 
 const patients: Patient[] = [];
@@ -36,11 +35,22 @@ export default function PatientsPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-xl font-bold text-slate-900">Patient Records</h1>
-                    <p className="text-sm text-slate-500 mt-0.5">Manage and view patient histories</p>
+                    <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
+                        Patient Records
+                    </h1>
+                    <p className="text-sm mt-0.5" style={{ color: "var(--text-muted)" }}>
+                        Manage and view patient histories
+                    </p>
                 </div>
                 <div className="flex gap-2">
-                    <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                    <button
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        style={{
+                            background: "var(--bg-elevated)",
+                            border: "1px solid var(--border)",
+                            color: "var(--text-secondary)",
+                        }}
+                    >
                         <Filter size={15} />
                         Filter
                     </button>
@@ -54,90 +64,161 @@ export default function PatientsPage() {
             {/* Summary Badges */}
             <div className="flex gap-3 flex-wrap">
                 {[
-                    { label: "Total Patients", value: patients.length.toString(), icon: UserCheck, color: "text-blue-600 bg-blue-50 border-blue-100" },
-                    { label: "High Risk", value: patients.filter(p => p.status === "High Risk").length.toString(), icon: null, color: "text-red-600 bg-red-50 border-red-100" },
-                    { label: "Normal", value: patients.filter(p => p.status === "Normal").length.toString(), icon: null, color: "text-green-600 bg-green-50 border-green-100" },
-                    { label: "Pending", value: patients.filter(p => p.status === "Pending").length.toString(), icon: null, color: "text-amber-600 bg-amber-50 border-amber-100" },
-                ].map((s) => (
-                    <div key={s.label} className={cn("flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium", s.color)}>
-                        <span className="font-bold">{s.value}</span>
-                        <span className="opacity-70">{s.label}</span>
-                    </div>
-                ))}
+                    { label: "Total Patients", value: patients.length.toString(), color: "blue" },
+                    { label: "High Risk", value: patients.filter(p => p.status === "High Risk").length.toString(), color: "red" },
+                    { label: "Normal", value: patients.filter(p => p.status === "Normal").length.toString(), color: "green" },
+                    { label: "Pending", value: patients.filter(p => p.status === "Pending").length.toString(), color: "amber" },
+                ].map((s) => {
+                    const colors = {
+                        blue: { bg: "var(--primary-light)", text: "var(--primary-text)", border: "var(--primary)" },
+                        red: { bg: "var(--danger-light)", text: "var(--danger)", border: "var(--danger)" },
+                        green: { bg: "var(--success-light)", text: "var(--success)", border: "var(--success)" },
+                        amber: { bg: "var(--warning-light)", text: "var(--warning)", border: "var(--warning)" },
+                    }[s.color as "blue" | "red" | "green" | "amber"];
+                    return (
+                        <div
+                            key={s.label}
+                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium"
+                            style={{ background: colors.bg, color: colors.text, borderColor: colors.border, borderStyle: "solid", borderWidth: "1px" }}
+                        >
+                            <span className="font-bold">{s.value}</span>
+                            <span className="opacity-70">{s.label}</span>
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Table Card */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+            <div
+                className="rounded-xl overflow-hidden"
+                style={{
+                    background: "var(--bg-elevated)",
+                    border: "1px solid var(--border)",
+                    boxShadow: "var(--shadow-sm)",
+                }}
+            >
                 {/* Search Bar */}
-                <div className="px-5 py-3.5 border-b border-slate-100 flex items-center gap-3">
+                <div
+                    className="px-5 py-3.5 flex items-center gap-3"
+                    style={{ borderBottom: "1px solid var(--border)" }}
+                >
                     <div className="relative flex-1 max-w-sm">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
+                        <Search
+                            className="absolute left-3 top-1/2 -translate-y-1/2"
+                            size={14}
+                            style={{ color: "var(--text-muted)" }}
+                        />
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search by name or ID..."
-                            className="w-full pl-8 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-50 transition-all"
+                            className="w-full pl-8 pr-4 py-2 rounded-lg text-sm outline-none transition-all"
+                            style={{
+                                background: "var(--bg-subtle)",
+                                border: "1px solid var(--border)",
+                                color: "var(--text-primary)",
+                            }}
                         />
                     </div>
-                    <span className="text-xs text-slate-400 ml-auto">{filtered.length} results</span>
+                    <span className="text-xs ml-auto" style={{ color: "var(--text-muted)" }}>
+                        {filtered.length} results
+                    </span>
                 </div>
 
                 {patients.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-                        <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
-                            <Users size={22} className="text-slate-400" />
+                        <div
+                            className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
+                            style={{ background: "var(--bg-subtle)" }}
+                        >
+                            <Users size={22} style={{ color: "var(--text-muted)" }} />
                         </div>
-                        <p className="text-sm font-medium text-slate-600">No patients yet</p>
-                        <p className="text-xs text-slate-400 mt-1">Add a patient or run a scan to see records here.</p>
+                        <p className="text-sm font-medium" style={{ color: "var(--text-secondary)" }}>
+                            No patients yet
+                        </p>
+                        <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
+                            Add a patient or run a scan to see records here.
+                        </p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
                             <thead>
-                                <tr className="border-b border-slate-100">
-                                    <th className="px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Patient</th>
-                                    <th className="px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">ID</th>
-                                    <th className="px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Demographics</th>
-                                    <th className="px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Last Scan</th>
-                                    <th className="px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Status</th>
+                                <tr style={{ borderBottom: "1px solid var(--border)" }}>
+                                    {["Patient", "ID", "Demographics", "Last Scan", "Status"].map((h) => (
+                                        <th
+                                            key={h}
+                                            className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider"
+                                            style={{ color: "var(--text-muted)" }}
+                                        >
+                                            {h}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
                             <tbody>
                                 {filtered.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-5 py-12 text-center text-sm text-slate-400">
+                                        <td
+                                            colSpan={5}
+                                            className="px-5 py-12 text-center text-sm"
+                                            style={{ color: "var(--text-muted)" }}
+                                        >
                                             No patients found matching &quot;{search}&quot;
                                         </td>
                                     </tr>
                                 ) : (
                                     filtered.map((patient, i) => {
-                                        const sc = statusConfig[patient.status] ?? statusConfig["Pending"];
+                                        const sc = statusStyles[patient.status] ?? statusStyles["Pending"];
                                         return (
                                             <tr
                                                 key={patient.id}
-                                                className={cn(
-                                                    "hover:bg-slate-50/70 transition-colors",
-                                                    i < filtered.length - 1 && "border-b border-slate-50"
-                                                )}
+                                                className="transition-colors"
+                                                style={i < filtered.length - 1 ? { borderBottom: "1px solid var(--border-muted)" } : {}}
+                                                onMouseEnter={(e) =>
+                                                    ((e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)")
+                                                }
+                                                onMouseLeave={(e) =>
+                                                    ((e.currentTarget as HTMLElement).style.background = "transparent")
+                                                }
                                             >
                                                 <td className="px-5 py-3.5">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center text-xs font-bold text-slate-600 uppercase shrink-0">
+                                                        <div
+                                                            className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold uppercase shrink-0"
+                                                            style={{ background: "var(--bg-subtle)", color: "var(--text-secondary)" }}
+                                                        >
                                                             {patient.name.slice(0, 2)}
                                                         </div>
-                                                        <span className="text-sm font-medium text-slate-800">{patient.name}</span>
+                                                        <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                                                            {patient.name}
+                                                        </span>
                                                     </div>
                                                 </td>
-                                                <td className="px-5 py-3.5 text-xs font-mono text-slate-500">{patient.id}</td>
-                                                <td className="px-5 py-3.5 text-sm text-slate-500">{patient.age}y / {patient.gender}</td>
-                                                <td className="px-5 py-3.5 text-sm text-slate-500">{patient.date}</td>
+                                                <td className="px-5 py-3.5 text-xs font-mono" style={{ color: "var(--text-muted)" }}>
+                                                    {patient.id}
+                                                </td>
+                                                <td className="px-5 py-3.5 text-sm" style={{ color: "var(--text-secondary)" }}>
+                                                    {patient.age}y / {patient.gender}
+                                                </td>
+                                                <td className="px-5 py-3.5 text-sm" style={{ color: "var(--text-secondary)" }}>
+                                                    {patient.date}
+                                                </td>
                                                 <td className="px-5 py-3.5">
-                                                    <span className={cn(
-                                                        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border",
-                                                        sc.className
-                                                    )}>
-                                                        <span className={cn("w-1.5 h-1.5 rounded-full", sc.dot)} />
+                                                    <span
+                                                        className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border"
+                                                        style={{
+                                                            background: sc.bg,
+                                                            color: sc.color,
+                                                            borderColor: sc.dot,
+                                                            borderWidth: "1px",
+                                                        }}
+                                                    >
+                                                        <span
+                                                            className="w-1.5 h-1.5 rounded-full"
+                                                            style={{ background: sc.dot }}
+                                                        />
                                                         {patient.status}
                                                     </span>
                                                 </td>

@@ -26,16 +26,40 @@ export default function AIPathologistPage() {
         setState("error");
     }, []);
 
+    const handleClear = useCallback(() => {
+        setState("idle");
+        setResult(null);
+        setErrorMsg("");
+    }, []);
+
     return (
         <div className="space-y-4 h-[calc(100vh-8rem)] flex flex-col">
             <div className="flex items-center justify-between shrink-0">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">AI Pathologist</h1>
-                    <p className="text-sm text-gray-500">Upload a biopsy slide for instant OSCC detection</p>
+                    <h1
+                        style={{
+                            color: "var(--text-primary)",
+                        }}
+                        className="text-2xl font-bold">AI Pathologist</h1>
+                    <p
+                        style={{
+                            color: "var(--text-secondary)",
+                        }}
+                        className="text-sm text-gray-500">Upload a biopsy slide for instant OSCC detection</p>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-400 bg-white border border-gray-100 rounded-lg px-3 py-2 shadow-sm">
+                <div
+                    style={{
+                        color: "var(--text-primary)",
+                        background: "var(--bg-subtle)",
+                        border: "1px solid var(--border)",
+                    }}
+                    className="flex items-center gap-2 text-xs rounded-lg px-3 py-2 shadow-sm">
                     <span className={`w-2 h-2 rounded-full ${state === "done" ? "bg-green-500" : state === "error" ? "bg-red-500" : state === "analyzing" ? "bg-yellow-400 animate-pulse" : "bg-gray-300"}`}></span>
-                    Model: <span className="font-medium text-gray-600">localhost:8000</span>
+                    Model: <span
+                        style={{
+                            color: "var(--text-secondary)",
+                        }}
+                        className="font-medium">OncoScan</span>
                 </div>
             </div>
 
@@ -46,6 +70,7 @@ export default function AIPathologistPage() {
                         onAnalysisStart={handleAnalysisStart}
                         onResult={handleResult}
                         onError={handleError}
+                        onClear={handleClear}
                     />
                 </div>
                 <div className="lg:col-span-5 h-full">

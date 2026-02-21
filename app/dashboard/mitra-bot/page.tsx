@@ -75,9 +75,19 @@ export default function MitraBotPage() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <div
+            style={{
+                background: "var(--bg-elevated)",
+                border: "1px solid var(--border)",
+                color: "var(--text-primary)",
+            }}
+            className="max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col rounded-xl shadow-sm border border-slate-100 overflow-hidden">
             {/* Header */}
-            <div className="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between shrink-0">
+            <div
+                style={{
+                    borderBottom: "1px solid var(--border)",
+                }}
+                className="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white shadow-sm">
                         <Sparkles size={17} />
@@ -104,7 +114,13 @@ export default function MitraBotPage() {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5 bg-slate-50/40">
+            <div
+                style={{
+                    background: "var(--bg-elevated)",
+                    border: "1px solid var(--border)",
+                    color: "var(--text-primary)",
+                }}
+                className="flex-1 overflow-y-auto px-5 py-5 space-y-5">
                 {messages.map((msg) => (
                     <div
                         key={msg.id}
@@ -113,31 +129,52 @@ export default function MitraBotPage() {
                             msg.role === 'user' ? "ml-auto flex-row-reverse" : ""
                         )}
                     >
-                        <div className={cn(
-                            "w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                            msg.role === 'bot'
-                                ? "bg-white text-indigo-600 border border-slate-200 shadow-sm"
-                                : "bg-indigo-600 text-white shadow-sm"
-                        )}>
+                        <div
+                            style={{
+                                background: "var(--bg-elevated)",
+                                border: "1px solid var(--border)",
+                                color: "var(--text-primary)",
+                            }}
+                            className={cn(
+                                "w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+                                msg.role === 'bot'
+                                    ? "bg-white text-indigo-600 border border-slate-200 shadow-sm"
+                                    : "bg-indigo-600 text-white shadow-sm"
+                            )}>
                             {msg.role === 'bot' ? <Bot size={15} /> : <User size={15} />}
                         </div>
-                        <div className={cn(
-                            "px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm whitespace-pre-wrap",
-                            msg.role === 'bot'
-                                ? "bg-white text-slate-700 border border-slate-100 rounded-tl-none"
-                                : "bg-indigo-600 text-white rounded-tr-none"
-                        )}>
+                        <div
+                            style={{
+                                background: "var(--bg-elevated)",
+                                border: "1px solid var(--border)",
+                                color: "var(--text-primary)",
+                            }} className={cn(
+                                "px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm whitespace-pre-wrap",
+                                msg.role === 'bot'
+                                    ? "bg-white text-slate-700 border border-slate-100 rounded-tl-none"
+                                    : "bg-indigo-600 text-white rounded-tr-none"
+                            )}>
                             {msg.content}
                         </div>
                     </div>
                 ))}
 
                 {isTyping && (
-                    <div className="flex gap-3 max-w-[88%]">
+                    <div
+                        style={{
+                            background: "var(--bg-elevated)",
+                            border: "1px solid var(--border)",
+                            color: "var(--text-primary)",
+                        }} className="flex gap-3 max-w-[88%]">
                         <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-white text-indigo-600 border border-slate-200 shadow-sm">
                             <Bot size={15} />
                         </div>
-                        <div className="bg-white border border-slate-100 px-4 py-3.5 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5">
+                        <div
+                            style={{
+                                background: "var(--bg-secondary)",
+                                border: "1px solid var(--border)",
+                                color: "var(--text-primary)",
+                            }} className="bg-white border border-slate-100 px-4 py-3.5 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5">
                             <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                             <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                             <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -148,7 +185,12 @@ export default function MitraBotPage() {
             </div>
 
             {/* Input Area */}
-            <div className="px-5 py-4 border-t border-slate-100 bg-white space-y-3 shrink-0">
+            <div
+                style={{
+                    background: "var(--bg-elevated)",
+                    border: "1px solid var(--border)",
+                    color: "var(--text-primary)",
+                }} className="px-5 py-4 border-t border-slate-100 bg-white space-y-3 shrink-0">
                 {/* Quick Actions */}
                 <div className="flex flex-wrap gap-2">
                     {quickActions.map((action) => (
