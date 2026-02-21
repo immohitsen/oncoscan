@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OncoScan
 
-## Getting Started
+AI-powered OSCC (Oral Cancer) detection from biopsy slides — Next.js dashboard + FastAPI ML backend.
 
-First, run the development server:
+---
+
+## How it works
+
+```
+Browser → Next.js (frontend) → Your FastAPI server → Swin Transformer model
+                             → MongoDB Atlas         (auth + records)
+```
+
+---
+
+## 1 — Set up the ML API (your own server)
+
+The inference backend is open — duplicate it from HuggingFace Spaces:
+
+**[https://huggingface.co/spaces/immohitsen/oncofastapi](https://huggingface.co/spaces/immohitsen/oncofastapi)**
+
+1. Click **"Duplicate this Space"** (top-right button)
+2. Give it a name and click **Duplicate Space** — HuggingFace builds it automatically
+3. Once running, your API URL will be:
+   ```
+   https://YOUR-USERNAME-YOUR-SPACE-NAME.hf.space
+   ```
+4. Verify it works:
+   ```bash
+   curl https://YOUR-USERNAME-YOUR-SPACE-NAME.hf.space/
+   # {"status":"online","model_loaded":true,...}
+   ```
+
+> You can also run it locally — clone the Space repo and run:
+> ```bash
+> pip install -r requirements.txt
+> uvicorn main:app --port 8000
+> ```
+
+---
+
+## 2 — Set up MongoDB
+
+1. Create a free cluster at [cloud.mongodb.com](https://cloud.mongodb.com)
+2. Create a database user and copy the connection string
+3. Whitelist your IP (or `0.0.0.0/0` for dev)
+
+---
+
+## 3 — Run the frontend
+
+```bash
+git clone https://github.com/your-username/oncoscan.git
+cd oncoscan
+npm install
+```
+
+Create `.env` in the `oncoscan/` folder:
+
+```env
+FASTAPI_URL="https://YOUR-USERNAME-YOUR-SPACE-NAME.hf.space"
+MONGODB_URI="mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/oncoscan"
+```
+
+Start:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| | |
+|---|---|
+| Frontend | Next.js 16, React 19, Tailwind CSS |
+| Auth | JWT + bcryptjs, MongoDB Atlas |
+| ML API | FastAPI, Swin Transformer (HuggingFace) |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Troubleshooting
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Problem | Fix |
+|---------|-----|
+| `Model not loaded` | Your Space is still building — wait ~2 min and refresh |
+| `bad auth` on MongoDB | Check username/password and IP whitelist in Atlas |
+| Port 3000 in use | Next.js auto-switches to 3001 |
